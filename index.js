@@ -23,32 +23,42 @@ app.use(session({
 app.use('/', require('./router'));
 
 // Ruta para manejar el inicio de sesión
+
 app.post('/', (req, res) => {
   const { user, pass } = req.body;
-
-  // Realiza una consulta a la base de datos para verificar las credenciales
+  
+  // Realiza una consulta a la base de datos para verificar las credenciales y obtener el tipo de usuario
   const query = `SELECT * FROM empleado WHERE user = '${user}' AND pass = '${pass}'`;
   connection.query(query, (error, results) => {
     if (error) throw error;
-
+    
     if (results.length > 0) {
       // Las credenciales son válidas, obtener el tipo de usuario
       const tipoUsuario = results[0].tipoUsuario;
-
-      // Renderiza la página de inicio y pasa el tipo de usuario como variable
-      res.render('layouts/index', { tipoUsuario });
+      
+      // Redirige a diferentes páginas de inicio según el tipo de usuario
+      switch (tipoUsuario) {
+        case 1:
+          res.redirect('/indexVendedor');
+          break;
+        case 2:
+          res.redirect('/indexBodeguero');
+          break;
+        case 3:
+          res.redirect('/indexAdmin');
+          break;
+        case 4:
+          res.redirect('/indexContador');
+          break;
+        default:
+          console.log('Credenciales inválidas'); // Imprime el mensaje de error en la consola
+          res.redirect('/'); // Redirige a una página de inicio predeterminada si el tipo de usuario no coincide con ninguno de los casos anteriores
+      }
     } else {
-      // Las credenciales son inválidas, se muestra un mensaje de error
-      res.render('/index', { error: 'Credenciales inválidas' });
+      console.log('Credenciales inválidas'); // Imprime el mensaje de error en la consola
+      res.redirect('/'); // Redirige nuevamente a la página de inicio de sesión
     }
   });
-});
-app.get('/index', (req, res) => {
-  // Obtén el tipo de usuario desde la base de datos u otra fuente de datos
-  const tipoUsuario = obtenerTipoUsuario();
-
-  // Renderiza la plantilla index.ejs y pasa el valor de tipoUsuario como variable
-  res.render('/index', { tipoUsuario });
 });
 
 // Ruta para obtener pedidos

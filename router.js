@@ -20,17 +20,31 @@ router.get('/bodeguero',(req, res)=> {
   res.render('bodeguero');
 })
 
-router.get("/index", (req, res)=> {
-  res.render("layouts/index");
-});
-
 router.get("/admin", (req, res)=> {
-  res.render("vendedor/admin");
+  res.render("admin/admin");
 });
 
 router.get("/cancelar", (req, res)=> {
   res.render("bodeguero/cancelarPedido");
 });
+
+router.get('/indexVendedor', (req, res) => {
+  res.render('vendedor/indexVendedor');
+});
+
+router.get('/indexBodeguero', (req, res) => {
+  res.render('bodeguero/indexBodeguero');
+});
+
+router.get('/indexContador', (req, res) => {
+  res.render('contador/indexContador');
+});
+
+router.get('/indexAdmin', (req, res) => {
+  res.render('admin/indexAdmin');
+});
+
+
 
 router.use('/resources', express.static('public'));
 router.use('/resources', express.static(__dirname + '/public'));

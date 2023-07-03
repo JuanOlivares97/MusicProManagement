@@ -37,7 +37,7 @@
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="/">
             <span>
-              Music pro
+              Music pro /vendedor
             </span>
           </a>
           <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
@@ -48,62 +48,23 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
-              <% if (tipoUsuario == 1) { %>
-                <ul class="navbar-nav  ">
-                  <li class="nav-item active">
-
-                    <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/vendedor"> Productos </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/pagosvendedor"> Pagos </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/admin">Pedidos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/">Cerrar sesion</a>
-                  </li>
+              <ul class="navbar-nav  ">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/cancelar"> Productos </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/index"> Pagos </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/index">Pedidos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/">Cerrar sesion</a>
+                </li>
               </ul>
-              <% } %>
-                <% if (tipoUsuario == 2) { %>
-                  <li class="nav-item active">
-                    <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/cancelar"> Productos </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/pagosvendedor"> Pagos </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/admin">Pedidos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/">Cerrar sesion</a>
-                  </li>
-                  </ul>
-                  <% } %>
-                    <% if (tipoUsuario==3) { %>
-                      <li class="nav-item active">
-                        <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="/vendedor"> Productos </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="/pagosvendedor"> Pagos </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="/admin">Pedidos</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" href="/">Cerrar sesion</a>
-                      </li>
-                      </ul>
-                      <% } %>
             </div>
           </div>
           <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
@@ -659,8 +620,8 @@
     </section>
     <!-- footer section -->
 
-    <script type="text/javascript" src="resources/js/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="resources/js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
 </body>
 
 </html>
