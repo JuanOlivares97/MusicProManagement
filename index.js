@@ -20,65 +20,38 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// definicion de rutas
-//app.use(require('/routes'));
-//app.use(require('/routes/authenticacion'));
-//app.use(require('/routes/link'));
-
-
 app.use('/', require('./router'));
 
+// Ruta para manejar el inicio de sesión
+app.post('/', (req, res) => {
+  const { user, pass } = req.body;
 
-// Ruta para el inicio de sesión
-app.post('/login', (req, res) => {
-  const { user, pass, tipoUsuario } = req.body;
+  // Realiza una consulta a la base de datos para verificar las credenciales
+  const query = `SELECT * FROM empleado WHERE user = '${user}' AND pass = '${pass}'`;
+  connection.query(query, (error, results) => {
+    if (error) throw error;
 
-  const query = 'SELECT * FROM empleado WHERE user = ?';
-  connection.query(query, [user], (error, results) => {
-    if (error) {
-      console.error('Error en la consulta:', error);
-      return res.status(500).json({ message: 'Error en el servidor' });
-    }
+    if (results.length > 0) {
+      // Las credenciales son válidas, obtener el tipo de usuario
+      const tipoUsuario = results[0].tipoUsuario;
 
-    if (results.length === 0 || pass !== results[0].pass) {
-      return res.status(401).json({ message: 'Credenciales inválidas' });
-    }
-
-    const profileMap = {
-      1: 'vendedor.ejs',
-      2: 'bodeguero.ejs',
-      3: 'contador.ejs',
-      4: 'admin.ejs',
-    };
-
-    const ejsTemplate = profileMap[tipoUsuario];
-    if (!ejsTemplate) {
-      return res.status(401).json({ message: 'Tipo de usuario inválido' });
-    }
-
-    res.render(ejsTemplate, { userId: results[0].id });
-  });
-});
-/////mostrat datos al vendedor////
-//app.get('/vendedor', function (req, res) {
-  //connection.query('SELECT * FROM productos', function (error, producto) {
-   // if (error) {
-    //  res.render('error', { message: 'Error al cargar los productos' });
-    //} else {
-    //  res.render('vendedor', { productos: producto });
-    //}
-  //});
-//});
-// Ruta para obtener pedidos
-app.get('/pedidos', (req, res) => {
-  connection.query('SELECT * FROM pedidos', (error, results) => {
-    if (error) {
-      res.status(500).json({ error: 'Error al obtener los pedidos' });
+      // Renderiza la página de inicio y pasa el tipo de usuario como variable
+      res.render('layouts/index', { tipoUsuario });
     } else {
-      res.json(results);
+      // Las credenciales son inválidas, se muestra un mensaje de error
+      res.render('/index', { error: 'Credenciales inválidas' });
     }
   });
 });
+app.get('/index', (req, res) => {
+  // Obtén el tipo de usuario desde la base de datos u otra fuente de datos
+  const tipoUsuario = obtenerTipoUsuario();
+
+  // Renderiza la plantilla index.ejs y pasa el valor de tipoUsuario como variable
+  res.render('/index', { tipoUsuario });
+});
+
+// Ruta para obtener pedidos
 async function obtenerProductos() {
   try {
     const response = await axios.get('http://lowedev.cl/api_musicpro/vendedor.php');
@@ -88,14 +61,13 @@ async function obtenerProductos() {
     throw error;
   }
 }
-
 app.get('/vendedor', (req, res) => {
   obtenerProductos()
     .then((productos) => {
-      res.render('vendedor', { productos }); 
+      res.render('vendedor/vendedor', { productos });
     })
     .catch((error) => {
-      res.render('error', { error }); 
+      res.render('error', { error });
     });
 });
 
@@ -112,10 +84,10 @@ async function obtenerPagos() {
 app.get('/pagosvendedor', (req, res) => {
   obtenerPagos()
     .then((compras) => {
-      res.render('pagosvendedor', { compras }); 
+      res.render('vendedor/pagosvendedor', { compras });
     })
     .catch((error) => {
-      res.render('error', { error }); 
+      res.render('error', { error });
     });
 });
 

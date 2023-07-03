@@ -12,7 +12,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>Heustonn</title>
+  <title>MusicPro</title>
 
   <!-- slider stylesheet -->
   <link rel="stylesheet" type="text/css"
@@ -37,7 +37,7 @@
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="/">
             <span>
-              Music pro /admin
+              Music pro /bodeguero
             </span>
           </a>
           <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
@@ -48,23 +48,61 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
-              <ul class="navbar-nav  ">
-                <li class="nav-item">
-                  <a class="nav-link" href="/">Inicio </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/vendedor"> Productos </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/pagosvendedor"> Pagos </a>
-                </li>
-                <li class="nav-item active">
-                  <a class="nav-link" href="/admin">Pedidos <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/login">Cerrar sesion</a>
-                </li>
-              </ul>
+                <% if (tipoUsuario==1) { %>
+                    <li class="nav-item active">
+  
+                      <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/vendedor"> Productos </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/pagosvendedor"> Pagos </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/admin">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/">Cerrar sesion</a>
+                    </li>
+                </ul>
+                <% } %>
+                  <% if (tipoUsuario==2) { %>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/cancelar"> Productos </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/pagosvendedor"> Pagos </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/admin">Pedidos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/">Cerrar sesion</a>
+                    </li>
+                    </ul>
+                    <% } %>
+                      <% if (tipoUsuario==3) { %>
+                        <li class="nav-item active">
+                          <a class="nav-link" href="/index">Inicio <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/vendedor"> Productos </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/pagosvendedor"> Pagos </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/admin">Pedidos</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/">Cerrar sesion</a>
+                        </li>
+                        </ul>
+                        <% } %>
             </div>
           </div>
           <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
