@@ -4,18 +4,21 @@ const port = 3001;
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-//ejs
+const dotenv = require('dotenv');
+
+//Motor de vistas
 app.set('view engine', 'ejs')
+
+//Rutas
 const contadorRoutes = require('./routes/contadorRoute.js')
 const bodegueroRoutes = require('./routes/bodegueroRoute.js')
 const vendedorRoutes = require('./routes/vendedorRoute.js')
 const adminRoutes = require('./routes/adminRoute.js')
+
 //database
-const dotenv = require('dotenv');
+
 dotenv.config({ path: './env/.env' });
 const connection = require('./database/db');
-
-//
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
   secret: 'my-secret-key',
@@ -23,7 +26,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// Ruta para manejar el inicio de sesión
+// Ruta para manejar las rutas de los distintos usuarios
 app.use('/contador', contadorRoutes)
 app.use('/bodeguero', bodegueroRoutes)
 app.use('/vendedor', vendedorRoutes)
