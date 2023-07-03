@@ -1,0 +1,59 @@
+.content{
+    display: flex;
+    flex-direction: column;
+    height: 85vh;
+    width: 100%;
+}
+.stats-conteiner{
+    margin: 50px 0px 0px 0px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.stats{
+    margin: 0px 50px 50px 50px;
+    background-color: aliceblue;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 50px 50px 50px;
+    border-radius: 15%;
+}
+.charts{
+    display: flex;
+    width: 100%;
+    height: 600px;
+    justify-content: center;
+}
+#pedidos-transferencias{
+    width: 50%;
+    background-color: aliceblue;
+    border-radius: 5%;
+    margin: 10px;
+}
+#pedidos-webpay{
+    width: 50%;
+    background-color: aliceblue;
+    border-radius: 5%;
+    margin: 10px;
+}
+.white-block1{
+    background-color: aliceblue;
+    border-radius: 5%;
+    margin: 10px;
+    padding: 15px;
+    height: 80vh;
+    width: 70%;
+}
+.white-block2{
+    background-color: aliceblue;
+    border-radius: 5%;
+    margin: 10px;
+    padding: 15px;
+    height: 80vh;
+    width: 30%;
+}
+.pedidos-aceptados{
+    display: flex;
+}

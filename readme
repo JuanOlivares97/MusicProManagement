@@ -1,1 +1,3 @@
+npm install axios body-parser dotenv ejs express express-session mysql nodemon 
+
 npm run dev

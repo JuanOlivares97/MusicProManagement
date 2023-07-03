@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>MusicPro || Pedidos Pendientes</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="resources/css2/bootstrap.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,700|Roboto:400,700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="resources/css2/style.css" rel="stylesheet" />
+    <link href="resources/css2/responsive.css" rel="stylesheet" />
+    <link href="resources/css/contador.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="hero_area">
+      <!-- header section strats -->
+      <header class="header_section">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <a class="navbar-brand" href="/">
+              <span> Music pro || Contador </span>
+            </a>
+            <button
+              class="navbar-toggler ml-auto"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div
+                class="d-flex mx-auto flex-column flex-lg-row align-items-center"
+              >
+                <ul class="navbar-nav">
+                  <li class="nav-item">
+                    <a class="nav-link" href="/contador/">Inicio</a>
+                  </li>
+                  <li class="nav-item active">
+                    <a class="nav-link" href="/contador/pedidos-pendientes">
+                      Pedidos Pendientes <span class="sr-only">(current)</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/contador/pedidos-aceptados">
+                      Pedidos Aceptados
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/contador/pedidos-entregados"
+                      >Pedidos Entregados</a
+                    >
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/">Cerrar sesion</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- end header section -->
+    </div>
+
+    <section class="content">
+      <div class="pedidos-aceptados">
+        <div class="white-block1">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha y Hora</th>
+                <th>Total</th>
+                <th>Nombre del cliente</th>
+                <th>Correo Electronico</th>
+                <th>Telefono</th>
+                <th>Estado</th>
+                <th>Opciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% compras.forEach(function(compra) { %>
+              <td><%= compra.id %></td>
+              <td><%= compra.fecha %></td>
+              <td><%= compra.total %></td>
+              <td><%= compra.NombreCompleto %></td>
+              <td><%= compra.CorreoElectronico %></td>
+              <td><%= compra.Telefono %></td>
+              <td><%= compra.tipoPago %></td>
+              <td><%= compra.Estado %></td>
+              <td>Opciones por hacer</td>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+        <div class="white-block2"></div>
+      </div>
+    </section>
+
+    <!-- end work section -->
+
+    <!-- contact section -->
+
+    <section class="contact_section layout_padding">
+      <div class="custom_heading-container">
+        <h3 class=" ">¡Sugerencias!</h3>
+      </div>
+      <div class="container layout_padding2-top">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <form action="">
+              <div>
+                <input type="text" placeholder="Nombre" />
+              </div>
+              <div>
+                <input type="email" placeholder="Correo" />
+              </div>
+              <div>
+                <input type="text" placeholder="Numero de Telefono" />
+              </div>
+              <div>
+                <select name="" id="">
+                  <option value="" disabled selected>Tipo de sugerencia</option>
+                  <option value="">Service 1</option>
+                  <option value="">Service 2</option>
+                  <option value="">Service 3</option>
+                </select>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  class="message-box"
+                  placeholder="Sugerencia"
+                />
+              </div>
+              <div class="d-flex justify-content-center">
+                <button>Enviar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end contact section -->
+
+    <section class="info_section layout_padding">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <div class="info-nav">
+              <h4>Navigation</h4>
+              <ul>
+                <li>
+                  <a href="index.html"> Home </a>
+                </li>
+                <li>
+                  <a href="about.html"> About </a>
+                </li>
+                <li>
+                  <a href="service.html"> Services </a>
+                </li>
+                <li>
+                  <a href="contact.html"> Contact Us </a>
+                </li>
+                <li>
+                  <a href="#"> Login </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="info-contact">
+              <h4>Contact Info</h4>
+              <div class="location">
+                <h6>Corporate Office Address:</h6>
+                <a href="">
+                  <img src="resources/images/location.png" alt="" />
+                  <span> Loram ipusm New York, NY 36524 </span>
+                </a>
+              </div>
+              <div class="call">
+                <h6>Customer Service:</h6>
+                <a href="">
+                  <img src="resources/images/telephone.png" alt="" />
+                  <span> ( +01 1234567890 ) </span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="discover">
+              <h4>Discover</h4>
+              <ul>
+                <li>
+                  <a href=""> Help </a>
+                </li>
+                <li>
+                  <a href=""> How It Works </a>
+                </li>
+                <li>
+                  <a href=""> subscribe </a>
+                </li>
+                <li>
+                  <a href="contact.html"> Contact Us </a>
+                </li>
+              </ul>
+              <div class="social-box">
+                <a href="">
+                  <img src="resources/images/facebook.png" alt="" />
+                </a>
+                <a href="">
+                  <img src="resources/images/twitter.png" alt="" />
+                </a>
+                <a href="">
+                  <img src="resources/images/google-plus.png" alt="" />
+                </a>
+                <a href="">
+                  <img src="resources/images/linkedin.png" alt="" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- end info_section -->
+
+    <!-- footer section -->
+    <section class="container-fluid footer_section">
+      <p>Copyright &copy; 2023 Todos los derechos reservados por MusicPro</p>
+    </section>
+    <!-- footer section -->
+
+    <script
+      type="text/javascript"
+      src="resources/js/jquery-3.4.1.min.js"
+    ></script>
+    <script type="text/javascript" src="resources/js/bootstrap.js"></script>
+    <script src="resources/js/charts.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+  </body>
+</html>
