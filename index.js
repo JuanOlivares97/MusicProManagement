@@ -6,7 +6,10 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 //ejs
 app.set('view engine', 'ejs')
-
+const contadorRoutes = require('./routes/contadorRoute.js')
+const bodegueroRoutes = require('./routes/bodegueroRoute.js')
+const vendedorRoutes = require('./routes/vendedorRoute.js')
+const adminRoutes = require('./routes/adminRoute.js')
 //database
 const dotenv = require('dotenv');
 dotenv.config({ path: './env/.env' });
@@ -20,13 +23,14 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use('/', require('./router'));
-
 // Ruta para manejar el inicio de sesión
+app.use('/contador', contadorRoutes)
+app.use('/bodeguero', bodegueroRoutes)
+app.use('/vendedor', vendedorRoutes)
+app.use('/admin', adminRoutes)
 
 app.post('/', (req, res) => {
   const { user, pass } = req.body;
-  
   // Realiza una consulta a la base de datos para verificar las credenciales y obtener el tipo de usuario
   const query = `SELECT * FROM empleado WHERE user = '${user}' AND pass = '${pass}'`;
   connection.query(query, (error, results) => {
@@ -39,16 +43,16 @@ app.post('/', (req, res) => {
       // Redirige a diferentes páginas de inicio según el tipo de usuario
       switch (tipoUsuario) {
         case 1:
-          res.redirect('/indexVendedor');
+          res.redirect('vendedor/');
           break;
         case 2:
-          res.redirect('/indexBodeguero');
+          res.redirect('bodeguero/');
           break;
         case 3:
-          res.redirect('/indexAdmin');
+          res.redirect('admin/');
           break;
         case 4:
-          res.redirect('/indexContador');
+          res.redirect('contador/');
           break;
         default:
           console.log('Credenciales inválidas'); // Imprime el mensaje de error en la consola
@@ -71,6 +75,7 @@ async function obtenerProductos() {
     throw error;
   }
 }
+
 app.get('/vendedor', (req, res) => {
   obtenerProductos()
     .then((productos) => {
@@ -100,6 +105,7 @@ app.get('/pagosvendedor', (req, res) => {
       res.render('error', { error });
     });
 });
+
 
 
 app.use('/resources', express.static('public'));
