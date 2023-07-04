@@ -3,7 +3,7 @@ const app = express()
 const port = 3001;
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const axios = require('axios');
+
 const dotenv = require('dotenv');
 
 //Motor de vistas
@@ -32,13 +32,12 @@ app.use('/bodeguero', bodegueroRoutes)
 app.use('/vendedor', vendedorRoutes)
 app.use('/admin', adminRoutes)
 
-app.get('/', (req, res) =>{
+app.get('/', (req, res)=>{
   res.render('login')
 })
 
 app.post('/', (req, res) => {
   const { user, pass } = req.body;
-  // Realiza una consulta a la base de datos para verificar las credenciales y obtener el tipo de usuario
   const query = `SELECT * FROM empleado WHERE user = '${user}' AND pass = '${pass}'`;
   connection.query(query, (error, results) => {
     if (error) throw error;
@@ -62,16 +61,17 @@ app.post('/', (req, res) => {
           res.redirect('contador/');
           break;
         default:
-          console.log('Credenciales inválidas'); // Imprime el mensaje de error en la consola
-          res.redirect('/'); // Redirige a una página de inicio predeterminada si el tipo de usuario no coincide con ninguno de los casos anteriores
+          console.log('Credenciales inválidas'); 
+          res.redirect('/'); 
       }
     } else {
-      console.log('Credenciales inválidas'); // Imprime el mensaje de error en la consola
-      res.redirect('/'); // Redirige nuevamente a la página de inicio de sesión
+      console.log('Credenciales inválidas'); 
+      res.redirect('/');
     }
   });
 });
 
+<<<<<<< HEAD
 // Ruta para obtener pedidos
 async function obtenerProductos() {
   try {
@@ -181,6 +181,8 @@ app.post('/api/actualizarestado/:id', (req, res) => {
   // Realizar la redirección
   res.redirect('/contador/pedidos-pendientes');
 });
+=======
+>>>>>>> 2a55b0be1bfae1458d3272fadaa9f0ab24e17932
 
 
 
