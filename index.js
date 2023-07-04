@@ -70,7 +70,7 @@ app.post('/', (req, res) => {
     }
   });
 });
-
+//PERFIL VENDEDOR
 // Ruta para obtener pagos
 app.get('/pagosvendedor', (req, res) => {
   obtenerPagos()
@@ -81,6 +81,8 @@ app.get('/pagosvendedor', (req, res) => {
       res.render('error', { error });
     });
 });
+//</PERFIL VENDEDOR>
+
 app.get('/api/pedidos-pendientes', (req, res) => {
   const query = "SELECT `id`, DATE_FORMAT(fecha, '%d %b %Y') as fecha, `total`, `NombreCliente`, `ApellidoCliente`, `CorreoElectronico`, `Telefono`, `tipoPago`, CASE `estado` WHEN 1 THEN 'Aceptado' WHEN 2 THEN 'Entregado' WHEN 3 THEN 'Rechazado' ELSE 'Pendiente' END AS `Estado` FROM `compra` WHERE estado = 0 and tipoPago = 'transferencia'";
   connection.query(query, (error, results) => {
@@ -150,8 +152,123 @@ app.post('/api/actualizarestado/:id', (req, res) => {
   // Realizar la redirección
   res.redirect('/contador/pedidos-pendientes');
 });
+app.get('/listar-usuario', function (req, res) {
+  connection.query('SELECT * FROM empleado', function (error, empleado) {
+    if (error) {
+      res.render('error', { message: 'Error al cargar los productos' });
+    } else {
+      res.render('admin/listarUsuario', { empleado: empleado });
+    }
+  });
+});
 
 
+//Perfil administrador
+// Crear un empleado
+app.post('/empleado', (req, res) => {
+  const { nombre, apellido, correo, user, pass, tipoUsuario } = req.body;
+  connection.query('INSERT INTO empleado (nombre, apellido, correo, user, pass, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?)', [nombre, apellido, correo, user, pass, tipoUsuario], (err, result) => {
+    if (err) {
+      console.error('Error al crear el empleado: ', err);
+      res.status(500).send('Error del servidor');
+      return;
+    }
+    res.status(201).send('Empleado creado exitosamente');
+  });
+});
+
+// Eliminar un empleado
+app.delete('/eliminar-empleados', (req, res) => {
+  const id = req.params.id;
+  connection.query('DELETE FROM empleado WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar el empleado: ', err);
+      res.status(500).send('Error del servidor');
+      return;
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).send('Empleado no encontrado');
+    } else {
+      res.send('Empleado eliminado exitosamente');
+    }
+  });
+});
+
+// Ruta para mostrar el formulario de edición de empleado
+
+app.get('/listar-usuario', function (req, res) {
+  connection.query('SELECT * FROM empleado', function (error, empleado) {
+    if (error) {
+      res.render('error', { message: 'Error al cargar los productos' });
+    } else {
+      res.render('admin/listarUsuario', { empleado: empleado });
+    }
+  });
+});
+
+// Crear un empleado
+app.post('/empleado', (req, res) => {
+  const { nombre, apellido, correo, user, pass, tipoUsuario } = req.body;
+  connection.query('INSERT INTO empleado (nombre, apellido, correo, user, pass, tipoUsuario) VALUES (?, ?, ?, ?, ?, ?)', [nombre, apellido, correo, user, pass, tipoUsuario], (err, result) => {
+    if (err) {
+      console.error('Error al crear el empleado: ', err);
+      res.status(500).send('Error del servidor');
+      return;
+    }
+    res.status(201).send('Empleado creado exitosamente');
+  });
+});
+
+// Eliminar un empleado
+app.delete('/eliminar-empleados', (req, res) => {
+  const id = req.params.id;
+  connection.query('DELETE FROM empleado WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      console.error('Error al eliminar el empleado: ', err);
+      res.status(500).send('Error del servidor');
+      return;
+    }
+    if (result.affectedRows === 0) {
+      res.status(404).send('Empleado no encontrado');
+    } else {
+      res.send('Empleado eliminado exitosamente');
+    }
+  });
+});
+
+// Ruta para mostrar el formulario de edición de empleado
+app.get('/editar-usuario1/:id', (req, res) => {
+  const empleadoId = req.params.id;
+  const query = 'SELECT * FROM empleado WHERE id = ?';
+
+  connection.query(query, [empleadoId], (error, results) => {
+    if (error) {
+      console.error('Error al obtener los datos del empleado: ', error);
+      res.render('/error', { error });
+    } else {
+      // Renderiza el formulario de edición con los datos del empleado
+      res.render('admin/editarUsuario', { empleado : results});
+    }
+  });
+});
+
+app.post('/editar-usuario2/:id', (req, res) => {
+  const empleadoId = req.params.id;
+  const { nombre, apellido, correo, user, pass, tipoUsuario } = req.body;
+  // Realiza una consulta de actualización en la base de datos para actualizar los datos del empleado
+  const query = 'UPDATE empleado SET nombre = ?, apellido = ?, correo = ?, user = ?, pass = ?, tipoUsuario = ? WHERE id = ?';
+
+  connection.query(query, [nombre, apellido, correo, user, pass, tipoUsuario, empleadoId], (error, results) => {
+    if (error) {
+      console.error('Error al actualizar los datos del empleado: ', error);
+      res.render('error', { error });
+    } else {
+      // Redirige a una página de éxito o muestra un mensaje de éxito
+      res.redirect('/listar-usuario');
+    }
+  });
+});
+//</ ADMINISTRADOR>
 
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));

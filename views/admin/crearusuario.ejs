@@ -53,10 +53,11 @@
                   <a class="nav-link" href="/admin/">Inicio </a>
                 </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="/admin/crear-usuario"> Crear usuario <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/admin/crear-usuario"> Crear usuario <span
+                      class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/admin/listar-usuario"> Pagos</a>
+                  <a class="nav-link" href="/listar-usuario"> Usuarios</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/admin">Pedidos</a>
@@ -87,31 +88,31 @@
       <div class="container layout_padding2-top">
         <div class="row">
           <div class="col-md-6 mx-auto">
-            <form action="">
+            <form action="/empleado" method="POST">
               <div>
-                <input type="text" id="name" placeholder="Nombre">
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
               </div>
               <div>
-                <input type="text" id="name" placeholder="Apellido">
+                <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
               </div>
               <div>
-                <input type="email" id="mail" placeholder="Email">
+                <input type="email" id="correo" name="correo" placeholder="Email" required>
               </div>
               <div>
-                <input type="text" id="pass" placeholder="Contraseña">
+                <input type="text" id="user" name="user" placeholder="Usuario" required>
               </div>
               <div>
-                <input type="text" id="user" placeholder="Usuario">
+                <input type="password" id="pass" name="pass" placeholder="Contraseña" required>
               </div>
               <div>
-                <select name="" id="">
+                <select name="tipoUsuario" id="tipoUsuario">
                   <option value="" disabled selected>Tipo de Usuario</option>
-                  <option value="1">Opción 1 - Administrador</option>
-                  <option value="2">Opción 2 - Usuario Regular</option>
-                  <option value="3">Opción 3 - Invitado</option>
+                  <option value="1">Opción 1 - Vendedor</option>
+                  <option value="2">Opción 2 - bodeguero</option>
+                  <option value="3">Opción 3 - Administrador</option>
+                  <option value="4">Opción 4 - Contador</option>
                 </select>
               </div>
-
               <div class="d-flex justify-content-center ">
                 <button>
                   SEND
