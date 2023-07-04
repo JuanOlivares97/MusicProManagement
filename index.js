@@ -71,37 +71,6 @@ app.post('/', (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-// Ruta para obtener pedidos
-async function obtenerProductos() {
-  try {
-    const response = await axios.get('http://lowedev.cl/api_musicpro/vendedor.php');
-    return response.data;
-  } catch (error) {
-    console.error('Error al obtener los productos:', error);
-    throw error;
-  }
-}
-app.get('/vendedor', (req, res) => {
-  obtenerProductos()
-    .then((productos) => {
-      res.render('vendedor/vendedor', { productos });
-    })
-    .catch((error) => {
-      res.render('error', { error });
-    });
-});
-async function obtenerPagos() {
-  try {
-    const response = await axios.get('http://lowedev.cl/api_musicpro/pagos.php');
-    return response.data;
-  } catch (error) {
-    console.error('Error al obtener los productos:', error);
-    throw error;
-  }
-}
-
-
 // Ruta para obtener pagos
 app.get('/pagosvendedor', (req, res) => {
   obtenerPagos()
@@ -181,8 +150,6 @@ app.post('/api/actualizarestado/:id', (req, res) => {
   // Realizar la redirección
   res.redirect('/contador/pedidos-pendientes');
 });
-=======
->>>>>>> 2a55b0be1bfae1458d3272fadaa9f0ab24e17932
 
 
 
