@@ -17,8 +17,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     padding: 50px 50px 50px 50px;
     border-radius: 15%;
+}
+.stats p{
+    margin:0;
 }
 .charts{
     display: flex;
@@ -53,7 +57,40 @@
     padding: 15px;
     height: 80vh;
     width: 30%;
+    display: flex;
+    flex-direction: column;
+
 }
 .pedidos-aceptados{
     display: flex;
 }
+
+.info {
+    margin-bottom: 20px;
+  }
+
+  .info label {
+    font-weight: bold;
+  }
+
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  .items-table th,
+  .items-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .items-table th {
+    background-color: #f2f2f2;
+  }
+
+  .total {
+    text-align: right;
+    font-weight: bold;
+  }

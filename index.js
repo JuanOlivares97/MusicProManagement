@@ -82,7 +82,6 @@ async function obtenerProductos() {
     throw error;
   }
 }
-
 app.get('/vendedor', (req, res) => {
   obtenerProductos()
     .then((productos) => {
@@ -92,7 +91,6 @@ app.get('/vendedor', (req, res) => {
       res.render('error', { error });
     });
 });
-
 async function obtenerPagos() {
   try {
     const response = await axios.get('http://lowedev.cl/api_musicpro/pagos.php');
@@ -102,6 +100,8 @@ async function obtenerPagos() {
     throw error;
   }
 }
+
+
 // Ruta para obtener pagos
 app.get('/pagosvendedor', (req, res) => {
   obtenerPagos()
@@ -111,6 +111,75 @@ app.get('/pagosvendedor', (req, res) => {
     .catch((error) => {
       res.render('error', { error });
     });
+});
+app.get('/api/pedidos-pendientes', (req, res) => {
+  const query = "SELECT `id`, DATE_FORMAT(fecha, '%d %b %Y') as fecha, `total`, `NombreCliente`, `ApellidoCliente`, `CorreoElectronico`, `Telefono`, `tipoPago`, CASE `estado` WHEN 1 THEN 'Aceptado' WHEN 2 THEN 'Entregado' WHEN 3 THEN 'Rechazado' ELSE 'Pendiente' END AS `Estado` FROM `compra` WHERE estado = 0 and tipoPago = 'transferencia'";
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+app.get('/api/pedidos-aceptados', (req, res) => {
+  const query = "SELECT `id`, DATE_FORMAT(fecha, '%d %b %Y') as fecha, `total`, `NombreCliente`, `ApellidoCliente`, `CorreoElectronico`, `Telefono`, `tipoPago`, CASE `estado` WHEN 1 THEN 'Aceptado' WHEN 2 THEN 'Entregado' WHEN 3 THEN 'Rechazado' ELSE 'Pendiente' END AS `Estado` FROM `compra` WHERE estado = 1";
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+app.get('/api/pedidos-entregados', (req, res) => {
+  const query = "SELECT `id`, DATE_FORMAT(fecha, '%d %b %Y') as fecha, `total`, `NombreCliente`, `ApellidoCliente`, `CorreoElectronico`, `Telefono`, `tipoPago`, CASE `estado` WHEN 1 THEN 'Aceptado' WHEN 2 THEN 'Entregado' WHEN 3 THEN 'Rechazado' ELSE 'Pendiente' END AS `Estado` FROM `compra` WHERE estado = 2";
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+app.get('/api/pedidos-totales', (req, res) => {
+  const query = "SELECT CASE WHEN estado = 0 then COUNT(id) else 0 end Pendiente, CASE WHEN estado = 1 then COUNT(id) else 0 end Aceptado, CASE WHEN estado = 2 then COUNT(id) else 0 END Entregado, CASE WHEN estado = 3 then COUNT(id) else 0 end Rechazado FROM `compra` ";
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+app.get('/api/pedidos-totales-graficos-transferencias', (req, res) => {
+  const query = "SELECT c.Month AS Mes, CASE WHEN estado = 0 then COUNT(id) else 0 end Pendiente, CASE WHEN estado = 1 then COUNT(id) else 0 end Aceptado, CASE WHEN estado = 2 then COUNT(id) else 0 END Entregado, CASE WHEN estado = 3 then COUNT(id) else 0 end Rechazado FROM ( SELECT 1 AS Month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12 ) AS c LEFT JOIN compra ON c.Month = MONTH(compra.fecha) AND compra.tipoPago = 'transferencia' GROUP BY c.Month ";
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+app.get('/api/pedidos-totales-graficos-webpay', (req, res) => {
+  const query = "SELECT c.Month AS Mes, CASE WHEN estado = 0 then COUNT(id) else 0 end Pendiente, CASE WHEN estado = 1 then COUNT(id) else 0 end Aceptado, CASE WHEN estado = 2 then COUNT(id) else 0 END Entregado, CASE WHEN estado = 3 then COUNT(id) else 0 end Rechazado FROM ( SELECT 1 AS Month UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10 UNION SELECT 11 UNION SELECT 12 ) AS c LEFT JOIN compra ON c.Month = MONTH(compra.fecha) AND compra.tipoPago = 'WebPay' GROUP BY c.Month ";
+  connection.query(query, (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+app.get('/api/detalle-pedido/:id', (req, res) => {
+  const compraId = req.params.id;
+  const query = "SELECT CONCAT(u.nombre, ' ', u.apellido) AS NombreCompleto, u.rut, u.direccion, DATE_FORMAT(fecha, '%d %b %Y') as fecha, dc.producto_nombre, dc.cantidad, dc.precio, c.total FROM compra c INNER JOIN detalle_compra dc ON c.id = dc.compra_id INNER JOIN usuarios u ON c.cliente_id = u.id WHERE dc.compra_id = ?";
+  connection.query(query, [compraId], (error, results) => {
+    if (error) throw error;
+    res.json(results);
+  });
+});
+
+app.post('/api/actualizarestado/:id', (req, res) => {
+  const compraId = req.params.id;
+  const query = "UPDATE `compra` SET `estado`= 1 WHERE id = ?";
+  connection.query(query, [compraId], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    // Enviar la respuesta JSON al cliente
+    res.json(results);
+  });
+});
+
+// Después de enviar la respuesta JSON, realizar la redirección
+app.post('/api/actualizarestado/:id', (req, res) => {
+  const compraId = req.params.id;
+  // Realizar la redirección
+  res.redirect('/contador/pedidos-pendientes');
 });
 
 

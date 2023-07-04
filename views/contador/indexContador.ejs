@@ -72,24 +72,31 @@
 
     <section class="content">
       <center><div class="stats-conteiner">
+        <% if (response && response.length > 0) { %>
+        <% response.forEach((pedido) => { %>
         <div class="stats">
-          <strong>Pedidos Pendientes </strong>
-          <strong>10</strong>
+          <p>Pedidos Pendientes </p>
+          <h4><%= pedido.Pendiente %></h4>
         </div>
         <div class="stats">
-          <strong>Pedidos Aceptados </strong>
-          <strong>10</strong>
+          <p>Pedidos Aceptados </p>
+          <h4><%= pedido.Aceptado %></h4>
         </div>
         <div class="stats">
-          <strong>Pedidos Rechazados </strong>
-          <strong>10</strong>
+          <p>Pedidos Rechazados </p>
+          <h4><%= pedido.Rechazado %></h4>
         </div>
         <div class="stats">
-          <strong>Pedidos Entregados </strong>
-          <strong>10</strong>
+          <p>Pedidos Entregados </p>
+          <h4><%= pedido.Entregado %></h4>
         </div>
       </div>
-
+      <% }) %>
+      <% } else { %>
+        <center>
+        <h1>No hay pedidos</h1>
+      </center>
+      <% } %>
       <div class="charts">
         <div id="pedidos-transferencias">
 
@@ -283,7 +290,8 @@
     <script type="text/javascript" src="resources/js/bootstrap.js"></script>
     <script  src="resources/js/charts.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
 
 </html>

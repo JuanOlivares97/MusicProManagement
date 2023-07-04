@@ -1,22 +1,60 @@
-const express = require('express');
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
+const axios = require("axios");
 
-router.get('/', (req, res)=>{
-    res.render('contador/indexContador')
-})
-router.get('/pedidos-aceptados',(req, res)=>{
-    res.render('contador/pedidosAceptados')
-})
-router.get('/pedidos-entregados',(req, res)=>{
-    res.render('contador/pedidosEntregados')
-})
-router.get('/pedidos-pendientes', (req, res) => {
-    const query = "SELECT `id`, `fecha`, `total`, `estado`, `NombreCliente` || ' ' || `ApellidoCliente` AS `NombreCompleto`, `CorreoElectronico`, `Telefono`, `tipoPago`, CASE `estado` WHEN 1 THEN 'Aceptado' WHEN 2 THEN 'Entregado' WHEN 3 THEN 'Rechazado' ELSE 'Pendiente' END AS `Estado` FROM `compra` WHERE estado = 0";
-    
-    connection.query(query, (error, results) => {
-        if (error) throw error;
-        
-        res.render('contador/pedidosPendientes', { compras: results });
+router.get("/", (req, res) => {
+    axios
+      .get("http://localhost:3001/api/pedidos-totales")
+      .then((response) => {
+        res.render("contador/indexContador", { response: response.data });
+      })
+      .catch((error) => {
+        console.error(error);
+        res.render("contador/indexContador", {
+          error: "Error al obtener los pedidos",
+        });
+      });
+  });
+  
+router.get("/pedidos-aceptados", (req, res) => {
+  axios
+    .get("http://localhost:3001/api/pedidos-aceptados")
+    .then((response) => {
+      res.render("contador/pedidosAceptados", { response: response.data });
+    })
+    .catch((error) => {
+      // Manejar el error
+      console.error(error);
+      res.render("contador/pedidosAceptados", {
+        error: "Error al obtener los pedidos pendientes",
+      });
+    });
+});
+router.get("/pedidos-entregados", (req, res) => {
+  axios
+    .get("http://localhost:3001/api/pedidos-entregados")
+    .then((response) => {
+      res.render("contador/pedidosEntregados", { response: response.data });
+    })
+    .catch((error) => {
+      console.error(error);
+
+      res.render("contador/pedidosEntregados", {
+        error: "Error al obtener los pedidos pendientes",
+      });
+    });
+});
+router.get("/pedidos-pendientes", (req, res) => {
+  axios
+    .get("http://localhost:3001/api/pedidos-pendientes")
+    .then((response) => {
+      res.render("contador/pedidosPendientes", { response: response.data });
+    })
+    .catch((error) => {
+      console.error(error);
+      res.render("contador/pedidosPendientes", {
+        error: "Error al obtener los pedidos pendientes",
+      });
     });
 });
 

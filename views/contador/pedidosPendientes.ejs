@@ -32,6 +32,9 @@
     <link href="resources/css2/style.css" rel="stylesheet" />
     <link href="resources/css2/responsive.css" rel="stylesheet" />
     <link href="resources/css/contador.css" rel="stylesheet" />
+    <!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
   </head>
 
   <body>
@@ -102,26 +105,66 @@
                 <th>Nombre del cliente</th>
                 <th>Correo Electronico</th>
                 <th>Telefono</th>
+                <th>Tipo de Pago</th>
                 <th>Estado</th>
                 <th>Opciones</th>
               </tr>
             </thead>
             <tbody>
-              <% compras.forEach(function(compra) { %>
-              <td><%= compra.id %></td>
-              <td><%= compra.fecha %></td>
-              <td><%= compra.total %></td>
-              <td><%= compra.NombreCompleto %></td>
-              <td><%= compra.CorreoElectronico %></td>
-              <td><%= compra.Telefono %></td>
-              <td><%= compra.tipoPago %></td>
-              <td><%= compra.Estado %></td>
-              <td>Opciones por hacer</td>
+              <% if (response && response.length > 0) { %>
+                <% response.forEach((pedido) => { %>
+              <tr>
+              <td><%= pedido.id %></td>
+              <td><%= pedido.fecha %></td>
+              <td><%= pedido.total %></td>
+              <td><%= pedido.NombreCliente %> <%= pedido.ApellidoCliente %></td>
+              <td><%= pedido.CorreoElectronico %></td>
+              <td><%= pedido.Telefono %></td>
+              <td><%= pedido.tipoPago %></td>
+              <td><%= pedido.Estado %></td>
+              <td style="display: flex;">
+                <button class="btn btn-primary" onclick="limpiarDetalles(); obtenerDetallePedido(<%= pedido.id %>)"> Revisar </button>
+
+                <button class="btn btn-success" onclick="confirmarActualizacionCompra(<%= pedido.id %>)"> Aprobar </button></td>
+              </tr>
               <% }); %>
+              <% } else { %>
+                <tr>
+                <td>No hay pedidos pendientes</td>
+                </tr>
+              <% } %>
             </tbody>
           </table>
         </div>
-        <div class="white-block2"></div>
+        <div class="white-block2">
+          <center><h2>Informacion del pedido</h2></center>
+          <div class="info">
+            <label>Cliente:</label> <span id="cliente"></span><br>
+            <label>RUT:</label> <span id="rut"></span><br>
+            <label>Dirección:</label> <span id="direccion"></span><br>
+            <label>Fecha:</label> <span id="fecha"></span><br>
+          </div>
+          
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody id="items-table-body">
+            </tbody>
+          </table>
+          
+          <div class="total">
+            <label>Total:</label> <span id="total"></span>
+          </div>
+          
+          
+          
+        </div>
       </div>
     </section>
 
@@ -269,5 +312,9 @@
     <script type="text/javascript" src="resources/js/bootstrap.js"></script>
     <script src="resources/js/charts.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="resources/js/pedidos.js"></script>
+    <!-- SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </body>
 </html>
