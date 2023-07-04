@@ -26,6 +26,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
+
 // Ruta para manejar las rutas de los distintos usuarios
 app.use('/contador', contadorRoutes)
 app.use('/bodeguero', bodegueroRoutes)
@@ -178,7 +179,7 @@ app.post('/empleado', (req, res) => {
 });
 
 // Eliminar un empleado
-app.delete('/eliminar-empleados', (req, res) => {
+app.delete('/eliminar-empleados/:id', (req, res) => {
   const id = req.params.id;
   connection.query('DELETE FROM empleado WHERE id = ?', [id], (err, result) => {
     if (err) {
