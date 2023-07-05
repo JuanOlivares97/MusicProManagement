@@ -76,7 +76,9 @@
     <!-- end header section -->
     <!-- contact section -->
     <div class="container">
-        <h1>Tabla de Usuario</h1>
+      <center>
+        <h1 id="nombreTabla">Tabla de Usuario</h1>
+      </center>
         <table class="table table-striped-columns">
           <thead>
             <tr>
@@ -91,7 +93,7 @@
             </tr>
           </thead>
           <tbody>
-            <% empleado.forEach(function(empleado) { %>
+            <% empleados.forEach(function(empleado) { %>
               <tr>
                 <td><%= empleado.id %></td>
                 <td><%= empleado.nombre%> </td>
@@ -101,13 +103,20 @@
                 <td><%= empleado.pass %></td>
                 <td><%= empleado.tipoUsuario %></td>
                 <td>
-                  <a href="/editar-usuario1/<%= empleado.id %>">Editar</a>
-                  <a href="/eliminar-empleados/<%= empleado.id %>" onclick="return confirm('¿Estás seguro de eliminar este empleado?')">Eliminar</a> 
+                  <a id="editar" href="/editar-usuario1/<%= empleado.id %>">Editar</a>
+                  <a id="borrar" href="#" class="delete-link" data-id="<%= empleado.id %>">Eliminar</a> 
                 </td>
               </tr>
             <% }); %>
           </tbody>
         </table>
+      </div>
+      <div id="modal" class="modal">
+        <div class="modal-content">
+          <h2>¿Estás seguro de eliminar este empleado?</h2>
+          <button id="confirmBtn" class="modal-button">Eliminar</button>
+          <button id="cancelBtn" class="modal-button">Cancelar</button>
+        </div>
       </div>
     <!-- end contact section -->
     <!-- info section -->
@@ -116,9 +125,9 @@
         <div class="row">
           <div class="col-md-3">
             <div class="info-logo">
-              <h2>
+              <h4>
                 MusicPro
-              </h2>
+              </h4>
               <p>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum porro quo laborum voluptates, eveniet
                 nulla consequatur voluptatum vitae repudiandae neque aliquid unde odio quod consectetur minima libero
@@ -248,7 +257,7 @@
       </p>
     </section>
     <!-- footer section -->
-
+    <script src="/resources/js/modal.js"></script>
     <script type="text/javascript" src="resources/js/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 </body>

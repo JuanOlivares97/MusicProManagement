@@ -82,6 +82,17 @@ app.get('/pagosvendedor', (req, res) => {
       res.render('error', { error });
     });
 });
+
+app.get('/enviar-pedido', function (req, res) {
+  connection.query('SELECT * FROM detalle_compra WHERE `despacho` = 1', function (error, pedidos) {
+    if (error) {
+      res.render('error', { message: 'Error al cargar los pedidos' });
+    } else {
+      res.render('vendedor/pedidos', { pedidos: pedidos });
+    }
+  });
+});
+
 //</PERFIL VENDEDOR>
 
 app.get('/api/pedidos-pendientes', (req, res) => {
@@ -147,24 +158,15 @@ app.post('/api/actualizarestado/:id', (req, res) => {
   });
 });
 
-// Después de enviar la respuesta JSON, realizar la redirección
 app.post('/api/actualizarestado/:id', (req, res) => {
   const compraId = req.params.id;
   // Realizar la redirección
   res.redirect('/contador/pedidos-pendientes');
 });
-app.get('/listar-usuario', function (req, res) {
-  connection.query('SELECT * FROM empleado', function (error, empleado) {
-    if (error) {
-      res.render('error', { message: 'Error al cargar los productos' });
-    } else {
-      res.render('admin/listarUsuario', { empleado: empleado });
-    }
-  });
-});
 
 
 //Perfil administrador
+
 // Crear un empleado
 app.post('/empleado', (req, res) => {
   const { nombre, apellido, correo, user, pass, tipoUsuario } = req.body;
@@ -177,7 +179,16 @@ app.post('/empleado', (req, res) => {
     res.status(201).send('Empleado creado exitosamente');
   });
 });
-
+//Listar empleado
+app.get('/listar-usuario', function (req, res) {
+  connection.query('SELECT * FROM empleado', function (error, empleado) {
+    if (error) {
+      res.render('error', { message: 'Error al cargar los productos' });
+    } else {
+      res.render('admin/listarUsuario', { empleado: empleado });
+    }
+  });
+});
 // Eliminar un empleado
 app.delete('/eliminar-empleados/:id', (req, res) => {
   const id = req.params.id;
@@ -195,18 +206,6 @@ app.delete('/eliminar-empleados/:id', (req, res) => {
   });
 });
 
-// Ruta para mostrar el formulario de edición de empleado
-
-app.get('/listar-usuario', function (req, res) {
-  connection.query('SELECT * FROM empleado', function (error, empleado) {
-    if (error) {
-      res.render('error', { message: 'Error al cargar los productos' });
-    } else {
-      res.render('admin/listarUsuario', { empleado: empleado });
-    }
-  });
-});
-
 // Crear un empleado
 app.post('/empleado', (req, res) => {
   const { nombre, apellido, correo, user, pass, tipoUsuario } = req.body;
@@ -217,23 +216,6 @@ app.post('/empleado', (req, res) => {
       return;
     }
     res.status(201).send('Empleado creado exitosamente');
-  });
-});
-
-// Eliminar un empleado
-app.delete('/eliminar-empleados', (req, res) => {
-  const id = req.params.id;
-  connection.query('DELETE FROM empleado WHERE id = ?', [id], (err, result) => {
-    if (err) {
-      console.error('Error al eliminar el empleado: ', err);
-      res.status(500).send('Error del servidor');
-      return;
-    }
-    if (result.affectedRows === 0) {
-      res.status(404).send('Empleado no encontrado');
-    } else {
-      res.send('Empleado eliminado exitosamente');
-    }
   });
 });
 
@@ -270,6 +252,27 @@ app.post('/editar-usuario2/:id', (req, res) => {
   });
 });
 //</ ADMINISTRADOR>
+
+////Bodeguero
+app.get('/despachar-pedido', function (req, res) {
+  connection.query('SELECT * FROM detalle_compra WHERE `despacho` = 0', function (error, compras) {
+    if (error) {
+      res.render('error', { message: 'Error al cargar las compras' });
+    } else {
+      res.render('bodeguero/cancelar', { compras: compras });
+    }
+  });
+});
+
+app.post('/actualizar-despacho/:id', (req, res) => {
+  const id = req.params.id;
+  // Realiza una consulta de actualización para cambiar el valor de "despacho" de 0 a 1.
+  const query = "UPDATE `detalle_compra` SET `despacho` = 1 WHERE `id` = ?";
+  connection.query(query, [id], (error, results) => {
+    if (error) throw error;
+    res.redirect("/despachar-pedido"); 
+  });
+});
 
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
