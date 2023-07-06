@@ -86,16 +86,6 @@ app.get('/pagosvendedor', (req, res) => {
     });
 });
 
-app.get('/enviar-pedido', function (req, res) {
-  connection.query('SELECT * FROM detalle_compra WHERE `despacho` = 1', function (error, pedidos) {
-    if (error) {
-      res.render('error', { message: 'Error al cargar los pedidos' });
-    } else {
-      res.render('vendedor/pedidos', { pedidos: pedidos });
-    }
-  });
-});
-
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -103,41 +93,41 @@ const transporter = nodemailer.createTransport({
     pass: 'kzcdporiudsjjukn' 
   }
 });
-// Ruta principal para enviar el correo electrónico
-app.get('/enviar-correo/:id', (req, res) => {
-  const id = req.params.id;
-
-  // Obtén el correo del usuario desde la base de datos
-  const query = 'SELECT c.CorreoElectronico FROM `detalle_compra`d JOIN compra c ON c.id = d.compra_id WHERE id = ?';
-  connection.query(query, [id], (err, results) => {
-    if (err) {
-      console.error('Error al obtener el correo del usuario:', err);
-      res.send('Error al obtener el correo del usuario');
+app.get('/enviar-pedido', function (req, res) {
+  connection.query('SELECT * FROM `detalle_compra` d JOIN compra c ON c.id = d.compra_id  WHERE `despacho` = 1', function (error, pedidos) {
+    if (error) {
+      res.render('error', { message: 'Error al cargar los pedidos' });
     } else {
-      if (results.length > 0) {
-        const correo = results[0].correo;
+      res.render('vendedor/pedidos', { pedidos: pedidos });
 
+      // Envía el correo electrónico para cada pedido
+      pedidos.forEach(pedido => {
+        const correoUsuario = pedido.CorreoElectronico;
+        const productoNombre = pedido.producto_nombre;
+        const nombreCliente = pedido.NombreCliente;
+        const apellidoCliente = pedido.ApellidoCliente;
         // Configura los detalles del mensaje
         const mensaje = {
-          from: 'cat.lazo@duocuc.cl',
-          to: correo,
-          subject: 'hola',
-          text: 'k tal?'
+          from: 'jua.olivares97@gmail.com',
+          to: correoUsuario,
+          subject: 'Pedido Despachado',
+          html: `<h2>Detalles del Pedido</h2>
+          <p>Estimado(a) ${nombreCliente} ${apellidoCliente},</p>
+          <p>Tu pedido del producto ${productoNombre} ha sido despachado.</p>
+          <p>¡Gracias por tu compra!</p>
+          <p>Si recibes correctamente este correo, no responder.</p>
+          <p>¡Gracias!</p>`
         };
 
         // Envía el mensaje de correo electrónico
         transporter.sendMail(mensaje, (error, info) => {
           if (error) {
             console.error('Error al enviar el correo electrónico:', error);
-            res.send('Error al enviar el correo electrónico');
           } else {
             console.log('Correo electrónico enviado:', info.response);
-            res.send('Correo electrónico enviado exitosamente');
           }
         });
-      } else {
-        res.redirect('/enviar-pedido')
-      }
+      });
     }
   });
 });

@@ -108,7 +108,7 @@
                 <%= pedido.despacho %>
             </td>
             <td>
-              <a id="editar" onclick="enviarCorreo('<%= pedido.id %>')">Enviar al cliente</a>
+              <a id="editar" onclick="enviarCorreo('<%= pedido.CorreoElectronico %>')">Enviar al cliente</a>
             </td>
           </tr>
           <% }); %>
@@ -254,12 +254,7 @@
         </p>
       </section>
       <!-- footer section -->
-      <script>
-        function enviarCorreo(id) {
-          // Realiza aquí la lógica para enviar el correo electrónico utilizando el ID del pedido
-          console.log("Enviar correo al cliente para el pedido con ID:", id);
-        }
-      </script>
+      <script type="text/javascript" src="/resources/js/correo.js"></script>
       <script type="text/javascript" src="/resources/js/jquery-3.4.1.min.js"></script>
       <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 </body>
