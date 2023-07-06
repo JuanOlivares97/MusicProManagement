@@ -97,10 +97,10 @@ app.get('/enviar-pedido', function (req, res) {
 });
 
 const transporter = nodemailer.createTransport({
-  service: 'MusicPro',
+  service: 'gmail',
   auth: {
-    user: 'cat.lazo@duocuc.cl',
-    pass: 'hector2018'
+    user: 'jua.olivares97@gmail.com', 
+    pass: 'kzcdporiudsjjukn' 
   }
 });
 // Ruta principal para enviar el correo electrónico
@@ -144,6 +144,7 @@ app.get('/enviar-correo/:id', (req, res) => {
 
 //</PERFIL VENDEDOR>
 
+//Perfil contador
 app.get('/api/pedidos-pendientes', (req, res) => {
   const query = "SELECT `id`, DATE_FORMAT(fecha, '%d %b %Y') as fecha, `total`, `NombreCliente`, `ApellidoCliente`, `CorreoElectronico`, `Telefono`, `tipoPago`, CASE `estado` WHEN 1 THEN 'Aceptado' WHEN 2 THEN 'Entregado' WHEN 3 THEN 'Rechazado' ELSE 'Pendiente' END AS `Estado` FROM `compra` WHERE estado = 0 and tipoPago = 'transferencia'";
   connection.query(query, (error, results) => {
@@ -212,6 +213,7 @@ app.post('/api/actualizarestado/:id', (req, res) => {
   // Realizar la redirección
   res.redirect('/contador/pedidos-pendientes');
 });
+//Fin perfil Contador
 
 
 //Perfil administrador
