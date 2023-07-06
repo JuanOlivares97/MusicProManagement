@@ -6,6 +6,10 @@ const bodyParser = require('body-parser');
 
 const dotenv = require('dotenv');
 
+//moment para hacer filtro por fecha
+const moment = require('moment');
+const nodemailer = require('nodemailer');
+
 //Motor de vistas
 app.set('view engine', 'ejs')
 
@@ -25,7 +29,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-
 
 // Ruta para manejar las rutas de los distintos usuarios
 app.use('/contador', contadorRoutes)
@@ -50,7 +53,7 @@ app.post('/', (req, res) => {
       // Redirige a diferentes páginas de inicio según el tipo de usuario
       switch (tipoUsuario) {
         case 1:
-          res.redirect('vendedor/');
+          res.redirect('vendedor/',);
           break;
         case 2:
           res.redirect('bodeguero/');
@@ -89,6 +92,52 @@ app.get('/enviar-pedido', function (req, res) {
       res.render('error', { message: 'Error al cargar los pedidos' });
     } else {
       res.render('vendedor/pedidos', { pedidos: pedidos });
+    }
+  });
+});
+
+const transporter = nodemailer.createTransport({
+  service: 'MusicPro',
+  auth: {
+    user: 'cat.lazo@duocuc.cl',
+    pass: 'hector2018'
+  }
+});
+// Ruta principal para enviar el correo electrónico
+app.get('/enviar-correo/:id', (req, res) => {
+  const id = req.params.id;
+
+  // Obtén el correo del usuario desde la base de datos
+  const query = 'SELECT c.CorreoElectronico FROM `detalle_compra`d JOIN compra c ON c.id = d.compra_id WHERE id = ?';
+  connection.query(query, [id], (err, results) => {
+    if (err) {
+      console.error('Error al obtener el correo del usuario:', err);
+      res.send('Error al obtener el correo del usuario');
+    } else {
+      if (results.length > 0) {
+        const correo = results[0].correo;
+
+        // Configura los detalles del mensaje
+        const mensaje = {
+          from: 'cat.lazo@duocuc.cl',
+          to: correo,
+          subject: 'hola',
+          text: 'k tal?'
+        };
+
+        // Envía el mensaje de correo electrónico
+        transporter.sendMail(mensaje, (error, info) => {
+          if (error) {
+            console.error('Error al enviar el correo electrónico:', error);
+            res.send('Error al enviar el correo electrónico');
+          } else {
+            console.log('Correo electrónico enviado:', info.response);
+            res.send('Correo electrónico enviado exitosamente');
+          }
+        });
+      } else {
+        res.redirect('/enviar-pedido')
+      }
     }
   });
 });
@@ -166,7 +215,6 @@ app.post('/api/actualizarestado/:id', (req, res) => {
 
 
 //Perfil administrador
-
 // Crear un empleado
 app.post('/empleado', (req, res) => {
   const { nombre, apellido, correo, user, pass, tipoUsuario } = req.body;
@@ -185,7 +233,7 @@ app.get('/listar-usuario', function (req, res) {
     if (error) {
       res.render('error', { message: 'Error al cargar los productos' });
     } else {
-      res.render('admin/listarUsuario', { empleado: empleado });
+      res.render('admin/listarUsuario', { empleados: empleado });
     }
   });
 });
@@ -255,11 +303,21 @@ app.post('/editar-usuario2/:id', (req, res) => {
 
 ////Bodeguero
 app.get('/despachar-pedido', function (req, res) {
-  connection.query('SELECT * FROM detalle_compra WHERE `despacho` = 0', function (error, compras) {
+  const fechaFiltro = req.query.fecha; // Obtén la fecha de filtro de los parámetros de consulta (por ejemplo, ?fecha=2023-07-05)
+
+  connection.query('SELECT * FROM `detalle_compra` d JOIN `compra` c ON c.id = d.compra_id WHERE d.despacho = 0', function (error, compras) {
     if (error) {
       res.render('error', { message: 'Error al cargar las compras' });
     } else {
-      res.render('bodeguero/cancelar', { compras: compras });
+      // Filtrar las compras por fecha utilizando moment.js
+      const comprasFiltradas = compras.filter(function(compra) {
+        const fechaCompra = moment(compra.fecha, 'YYYY-MM-DD');
+        const fechaFiltroMoment = moment(fechaFiltro, 'YYYY-MM-DD');
+
+        return fechaCompra.isSame(fechaFiltroMoment, 'day');
+      });
+
+      res.render('bodeguero/cancelar', { compras: comprasFiltradas, fechaFiltro: fechaFiltro });
     }
   });
 });
@@ -273,7 +331,7 @@ app.post('/actualizar-despacho/:id', (req, res) => {
     res.redirect("/despachar-pedido"); 
   });
 });
-
+//</ Bodeguero>
 app.use('/resources', express.static('public'));
 app.use('/resources', express.static(__dirname + '/public'));
 

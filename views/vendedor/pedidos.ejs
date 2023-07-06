@@ -69,9 +69,7 @@
 
             </div>
           </div>
-          <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
-            <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
-          </form>
+          <h5>Usuario: Vendedor</h5>
         </nav>
       </div>
     </header>
@@ -110,7 +108,7 @@
                 <%= pedido.despacho %>
             </td>
             <td>
-                <a id="editar" href="#">Enviar al cliente</a>
+              <a id="editar" onclick="enviarCorreo('<%= pedido.id %>')">Enviar al cliente</a>
             </td>
           </tr>
           <% }); %>
@@ -256,9 +254,14 @@
         </p>
       </section>
       <!-- footer section -->
-  
-      <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
-      <script type="text/javascript" src="js/bootstrap.js"></script>
+      <script>
+        function enviarCorreo(id) {
+          // Realiza aquí la lógica para enviar el correo electrónico utilizando el ID del pedido
+          console.log("Enviar correo al cliente para el pedido con ID:", id);
+        }
+      </script>
+      <script type="text/javascript" src="/resources/js/jquery-3.4.1.min.js"></script>
+      <script type="text/javascript" src="/resources/js/bootstrap.js"></script>
 </body>
 
 </html>

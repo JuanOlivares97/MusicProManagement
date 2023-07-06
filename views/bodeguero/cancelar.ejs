@@ -37,7 +37,7 @@
                 <nav class="navbar navbar-expand-lg custom_nav-container ">
                     <a class="navbar-brand" href="/">
                         <span>
-                            Music pro /bodeguero
+                            Music pro 
                         </span>
                     </a>
                     <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
@@ -53,24 +53,23 @@
                                     <a class="nav-link" href="/bodeguero/">Inicio </a>
                                 </li>
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="/despachar-pedido"> Cancelar<span class="sr-only">(current)</span>
+                                    <a class=" nav-link" href="/despachar-pedido"> Para Despachar<span
+                                        class="sr-only">(current)</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <!--<li class="nav-item">
                                     <a class="nav-link" href="/bodeguero/"> Pagos </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="/bodeguero/">Pedidos</a>
-                                </li>
+                                </li>-->
                                 <li class="nav-item">
                                     <a class="nav-link" href="/">Cerrar sesion</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <form class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0">
-                        <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit"></button>
-                    </form>
+                    <h5>Usuario: Bodeguero</h5>
                 </nav>
             </div>
         </header>
@@ -78,14 +77,26 @@
         <!-- slider section -->
         <div class="container">
             <center>
-                <h1 id="nombreTabla">Tabla de Usuario</h1>
+                <h1 id="nombreTabla">Tabla de Pedidos por Despachar</h1>
             </center>
-            <table class="table table-striped-columns">
+            <!-- Agrega un formulario para el filtro de fecha -->
+            <form action="/despachar-pedido" method="GET">
+                <label for="fecha">Filtrar por fecha:</label>
+                <input type="date" id="fecha" name="fecha">
+                <button id="editar" type="submit">Filtrar</button>
+            </form>
+
+            <!-- Muestra la fecha de filtro seleccionada -->
+            <h2>Compras para la fecha: <%= fechaFiltro %>
+            </h2>
+
+            <!-- Mostrar la tabla de compras -->
+            <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>ID de Compra</th>
                         <th>Referencia</th>
-                        <th>Producto nombre</th>
+                        <th>Nombre del Producto</th>
                         <th>Cantidad</th>
                         <th>Despacho</th>
                         <th>Acciones</th>
@@ -98,7 +109,7 @@
                                 <%= compra.compra_id %>
                             </td>
                             <td>
-                                <%= compra.referencia%>
+                                <%= compra.referencia %>
                             </td>
                             <td>
                                 <%= compra.producto_nombre %>

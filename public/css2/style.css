@@ -197,6 +197,9 @@ tr:hover {
   padding-right: 25px;
   padding-left: 25px;
 }
+.container-fluid h5{
+  color: #fff;
+}
 
 .header_section .nav_container {
   margin: 0 auto;
